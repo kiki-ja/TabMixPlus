@@ -1,5 +1,6 @@
 <!ENTITY closedtabsbtn.label "最近閉じたタブ">
 <!ENTITY closedtabsbtn.tooltip "最近閉じたタブのリストを表示">
+<!ENTITY reopenlastclosedtab.tooltip "最後に閉じたタブを開く">
 <!ENTITY sessionbtn.tooltip "セッションを表示＆操作">
 <!ENTITY tabslistbtn.label "タブの一覧">
 <!ENTITY tabslistbtn.tooltip "[タブの一覧] を表示">
