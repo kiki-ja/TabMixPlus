@@ -788,6 +788,10 @@ Tabmix.navToolbox = {
           let command = aNode.getAttribute("command");
           if (/Browser:ReloadOrDuplicate|Browser:Stop/.test(command))
             gTMPprefObserver.showReloadEveryOnReloadButton();
+
+          if (aNode.id === "tabmix-closedTabs-toolbaritem") {
+            TMP_ClosedTabs.setButtonType(Tabmix.prefs.getBoolPref("undoCloseButton.menuonly"));
+          }
         }
       }.bind(this)
     };
@@ -909,7 +913,7 @@ Tabmix.navToolbox = {
     let element = this.view.selectedElement;
     let result = this.view.getResultFromElement(element);
     if (Tabmix.prefs.getBoolPref("moveSwitchToTabNext") &&
-        result.type === UrlbarUtils.RESULT_TYPE.TAB_SWITCH && this.hasAttribute("actiontype")) {
+        result?.type === UrlbarUtils.RESULT_TYPE.TAB_SWITCH && this.hasAttribute("actiontype")) {
       prevTab = gBrowser.selectedTab;
       prevTabPos = prevTab._tPos;
     }
@@ -919,7 +923,7 @@ Tabmix.navToolbox = {
       let altEnter = !isMouseEvent && event &&
           event.altKey && !gBrowser.selectedTab.isEmpty;
       let where = "current";
-      let url = result.payload?.url ?? this.value;
+      let url = result?.payload?.url ?? this.value;
       let loadNewTab = Tabmix.whereToOpen("extensions.tabmix.opentabfor.urlbar",
         altEnter).inNew && !(/^ *javascript:/.test(url));
       if (isMouseEvent || altEnter || loadNewTab) {
@@ -1050,11 +1054,11 @@ Tabmix.navToolbox = {
 
     $LF = '\n          ';
     Tabmix.changeCode(obj, "searchbar." + fn)._replace(
-      /let params|openUILinkIn/,
+      'let params',
       'aWhere = Tabmix.navToolbox.whereToOpenSearch(aWhere);' + $LF +
       '$&'
     )._replace(
-      'openUILinkIn',
+      'openTrustedLinkIn',
       'params.inBackground = params.inBackground || Tabmix.prefs.getBoolPref("loadSearchInBackground");' + $LF +
       '$&'
     )._replace(

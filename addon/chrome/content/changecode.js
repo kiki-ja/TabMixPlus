@@ -79,7 +79,7 @@ Tabmix.changeCode = function(aParent, afnName, aOptions) {
           if (!excludeReturn.includes(this.fullName) &&
               /return\s.+/.test(this.value.replace(re, "")))
             addReturn = "\nreturn null\n";
-          this.value = this.value.replace("{", "{try {") +
+          this.value = this.value.replace(/\([^)]*\)\s*{/, "$&\ntry {") +
             ' catch (ex) {' +
             '   TabmixSvc.console.assert(ex, "outer try-catch in ' + (aName || this.fullName) + '");}' +
             addReturn +
@@ -97,6 +97,8 @@ Tabmix.changeCode = function(aParent, afnName, aOptions) {
       } catch (ex) {
         console.reportError(ex, console.callerName() + " failed to change " +
                             this.fullName + "\nError: ");
+
+        console.log(this.value);
       }
     },
 
@@ -157,7 +159,7 @@ Tabmix.changeCode = function(aParent, afnName, aOptions) {
         ex.message = ex.fnName + " was unable to change " + aName + "." +
             (this.errMsg || "\ncan't find string" + str + this.notFound.join("\n    ")) +
             "\n\nTry Tabmix latest development version from tabmixplus.org/tab_mix_plus-dev-build.xpi," +
-            "\nReport about this to Tabmix developer at http://tabmixplus.org/forum/";
+            "\nReport about this to Tabmix developer at https://github.com/onemen/TabMixPlus/issues";
         console.reportError(ex);
         if (debugMode) {
           console.clog(ex.fnName + "\nfunction " + aName + " = " + this.value, ex);
